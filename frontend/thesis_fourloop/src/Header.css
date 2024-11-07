@@ -1,0 +1,82 @@
+/* Header container styling */
+
+header {
+    padding-bottom: 1vh ;
+    display: flex; /* Flexbox for alignment */
+    justify-content: space-between; /* Space between elements */
+    align-items: center; /* Center items vertically */
+    width: 100%; /* Full width */
+  }
+  
+  /* Header title styling */
+  header h2 {
+    font-size: 1.5rem; /* Header text size */
+    margin: 0; /* Remove default margin */
+    color: #ffffff;
+  }
+  
+  header .header-actions {
+    padding: auto;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    color: white;
+    gap: 20%;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 30%;
+  }
+  header .header-actions #adminbutton {
+    background-color: blue;
+    width: 50%;
+  }
+  header .header-actions #logoutbutton {
+    background-color: blue;
+    width: 50%;
+  }
+
+
+@media screen and (max-width: 769px) {
+  header {
+    padding-bottom: 1vh ;
+    display: flex; /* Flexbox for alignment */
+    flex-direction: column;
+    justify-content: space-between; /* Space between elements */
+    align-items: center; /* Center items vertically */
+    width: 100%; /* Full width */
+  }
+  
+  /* Header title styling */
+  header h2 {
+    font-size: 1rem; /* Header text size */
+    margin: 0; /* Remove default margin */
+    color: #ffffff;
+  }
+  
+ header .header-actions {
+  padding: auto;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  color: white;
+  gap: 20%;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+header .header-actions #adminbutton {
+  background-color: blue;
+  width: 40%;
+  align-self: center;
+}
+header .header-actions #logoutbutton {
+  background-color: blue;
+  width: 40%;
+}
+
+
+}

@@ -1,0 +1,95 @@
+/* Main container styling */
+* {
+  box-sizing: border-box; /* Apply to all elements */
+  margin-top: .2rem;
+}
+
+#root {
+  max-width: 1280px;
+  height: 100vh;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  padding: 0; /* Remove padding for more screen space */
+}
+
+/* Header styling */
+.header {
+  font-size: 1.2rem; /* Smaller header font size */
+  padding: 0.5em;
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Space out Header content */
+  align-items: center; /* Center items vertically */
+  flex-wrap: wrap; /* Ensure responsiveness on smaller screens */
+}
+
+.header .login-register {
+  display: flex;
+  align-items: center; /* Aligns login links vertically with the header */
+  padding: 0;
+  margin-left: auto;
+}
+
+.login-register a {
+  color: #007bff; /* Link color */
+  text-decoration: none; /* Remove underline */
+  margin: 0 0.5em; /* Spacing between links */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.login-register a:hover {
+  color: #0056b3; /* Darker color on hover */
+}
+
+.button-graph{
+  position: relative;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    width: 9%;
+    align-items: center;
+    margin-top: 2%;
+}
+
+/* Map container styling */
+.map {
+  flex: 1;
+  width: 90vw;
+  max-height: calc(100vh - 12rem); /* Occupies 90% of the screen */
+  margin-top: 0.5em;
+  border-radius: 8px;
+  overflow: hidden; /* No scrollbars inside the map */
+}
+/* Login/Register link styling */
+.switch-link {
+  cursor: pointer;           /* Show pointer cursor on hover */
+  color: #007bff;           /* Link color */
+  text-decoration: none;     /* Remove underline */
+  margin-top: 1em;          /* Space above the link */
+  display: inline-block;     /* Inline-block for better spacing */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+/* Hover effect for the links */
+.switch-link:hover {
+  color: #0056b3;           /* Darker color on hover */
+}
+
+/* Optional: You can style the paragraph containing the links as well */
+.switch-link-container {
+  text-align: center;       /* Center the text */
+  margin-top: 1em;         /* Space above the container */
+}
+@media screen and (max-width: 768px) {
+  .button-graph{
+    position: relative;
+      display: flex;
+      flex-direction: column;
+      left: 0;
+      width: 35%;
+  }
+}

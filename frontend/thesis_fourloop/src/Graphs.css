@@ -1,0 +1,90 @@
+/* Graphs.css */
+.Graphs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    padding: 10px;
+    width: 100%; /* Full width */
+    height: 60vh; /* Set height to occupy the upper part of the bottom half of the viewport */
+    position: absolute; /* Overlap the map */
+    bottom: 0;
+    background: white; /* Background for visibility */
+    z-index: 2000; /* Ensure it overlaps the map */
+}
+
+.graph-buttons{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    width: 50%;
+}
+.graph-buttons .daily-weekly{
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
+    width: 100%;
+}
+.graph-buttons .main-waste{
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
+    width: 100%;
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Full width */
+    height: calc(100% - 70px); /* Space for buttons and margin */
+    align-items: center;
+    overflow: hidden; /* Allow scrolling if necessary */
+    /*border: 1px solid black;*/
+}
+
+@media screen and (max-width: 768px) {
+    .Graphs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-self: center;
+        padding: 10px;
+        width: 100%; /* Full width */
+        height: 60vh; /* Set height to occupy the upper part of the bottom half of the viewport */
+        position: absolute; /* Overlap the map */
+        bottom: 0;
+        background: white; /* Background for visibility */
+        z-index: 2000; /* Ensure it overlaps the map */
+    }
+    .graph-buttons{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        left: 0;
+        width: 100%;
+    }
+    .graph-buttons .daily-weekly{
+        display: flex;
+        flex-direction: row;
+        gap: 5%;
+        width: 100%;
+    }
+    .graph-buttons .main-waste{
+        display: flex;
+        flex-direction: row;
+        gap: 5%;
+        width: 100%;
+    }
+
+    .chart-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%; /* Full width */
+        padding-top: 20%;
+        height: 100%; 
+        align-items: center;
+        overflow: hidden; /* Allow scrolling if necessary */
+    }
+}
+

@@ -1,0 +1,146 @@
+body{
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.l-r-wrapper {
+    width: 30vw; /* Use full width */
+    max-width: 420px; /* Limit to max width for form */
+    padding: 20px; /* Add padding */
+    background-color: #f9f9f9; /* Light background for contrast */
+    border: 1px solid #ccc; /* Border for form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+.l-r-wrapper form {
+    text-align: center;
+  }
+.l-r-wrapper h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem); /* Responsive title size */
+    text-align: center; /* Center the title */
+    margin-bottom: 1em; /* Space below the title */
+    color: #333; /* Darker color for better contrast */
+}
+
+.input-box {
+    position: relative; /* Relative positioning for styling */
+    width: 100%; /* Full width */
+    height: 50px; /* Set height for input boxes */
+    margin: 15px 0; /* Space between input boxes */
+    flex-wrap:wrap ;
+}
+
+.input-box input, #password, #username, .input-box input[type=text] {
+    width: 100%;
+    height: 100%; /* Full height for input */
+    padding: 10px; /* Padding inside input */
+    border-radius: 20px;
+    font-size: 1rem; /* Consistent font size */
+    outline: none; /* Remove outline */
+    transition: border-color 0.3s; /* Transition for border color */
+}
+
+/* Change border color on focus */
+.input-box input:focus {
+    border-color: #007bff; /* Change border color on focus */
+}
+
+button {
+    width: 100%; /* Full width for button */
+    padding: 10px; /* Padding inside button */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 40px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1rem; /* Consistent font size */
+    transition: background-color 0.3s; /* Smooth background color change */
+}
+
+
+
+/* Media query for mobile responsiveness */
+@media screen and (max-width: 769px) {
+    body {
+        width: 70%;
+        margin: 0 auto; /* Center horizontally */
+        height: 98vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .l-r-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: center; /* Center the content inside */
+    }
+
+    .input-box {
+        position: relative; /* Relative positioning for styling */
+        width: 100%; /* Full width */
+        height: 30px; /* Set height for input boxes */
+        margin: 15px 0; /* Space between input boxes */
+        flex-wrap:wrap ;
+    }
+    
+    .input-box input, #password, #username, .input-box input[type=text] {
+        width: 100%;
+        height: 100%; /* Full height for input */
+        padding: 10px; /* Padding inside input */
+        border-radius: 20px;
+        font-size: 1rem; /* Consistent font size */
+        outline: none; /* Remove outline */
+        transition: border-color 0.3s; /* Transition for border color */
+    }
+    
+    /* Change border color on focus */
+    .input-box input:focus {
+        border-color: #007bff; /* Change border color on focus */
+    }
+
+    .switch-link {
+        text-align: center; /* Center the text */
+        color: black; /* Default color for the text */
+        padding: 5px 10px; /* Optional padding for better clickability */
+        margin-top: 10px; /* Add margin to separate from other content */
+        display: flex;
+        flex-direction: row;
+    }
+
+    .switch-link span:hover {
+        text-decoration: underline; /* Underline the link on hover */
+        color: blue; /* Change color to blue on hover */
+    }
+}
+
+
+
+/* Styles for the back to dashboard link */
+.back-to-dashboard {
+    margin-top: 1em; /* Spacing above the text */
+    text-align: center; /* Center the text */
+    color: black; /* Default color for the text */
+  }
+  
+  /* Styles for the switch link */
+  .switch-link {
+    text-align: center; /* Center the text */
+    margin-top: 0.5em; /* Space above the link */
+    color: black; /* Default color for the text */
+  }
+  
+  /* Underline effect on hover */
+  .switch-link span:hover {
+    text-decoration: underline; /* Underline the link on hover */
+    color: blue; /* Change color to blue on hover */
+  }
+  
+  
+  
