@@ -4,6 +4,7 @@ import { Header } from './Header';
 import Map from './Map';
 import Graphs from './Graphs';
 import Admin from './Admin';
+import Collector from './Collector'
 import './App.css';
 
 const App = () => {
@@ -58,53 +59,69 @@ const App = () => {
       fetchPins();
     }, []);
     
-  return (
-    <div className="App">
-      <div className="header" style={{ display: formType ? 'none' : 'flex' }}>
-        <Header 
-          username={username} 
-          roles={roles} 
-          onLogout={handleLogout} 
-          onNavigateToAdmin={handleNavigateToAdmin} 
-          isAdminVisible={isAdminVisible} 
-        />
-        <div className="login-register">
-          {!username && (
-            <p>
-              <a href="#" onClick={() => setFormType('login')}>Login</a> | 
-              <a href="#" onClick={() => setFormType('register')}>Register</a>
-            </p>
-          )}
+    return (
+      <div className="App">
+        <div className="header" style={{ display: formType ? 'none' : 'flex' }}>
+          <Header 
+            username={username} 
+            roles={roles} 
+            onLogout={handleLogout} 
+            onNavigateToAdmin={handleNavigateToAdmin} 
+            isAdminVisible={isAdminVisible} 
+          />
+          <div className="login-register">
+            {!username && (
+              <p>
+                <a href="#" onClick={() => setFormType('login')}>Login</a> | 
+                <a href="#" onClick={() => setFormType('register')}>Register</a>
+              </p>
+            )}
+          </div>
         </div>
+    
+        {formType ? (
+          <Login 
+            formType={formType} 
+            onLoginSuccess={handleLoginSuccess} 
+            onBackToDashboard={() => setFormType(null)} 
+            setFormType={setFormType} 
+          />
+        ) : (
+          <>
+            {roles === 'collector' ? (
+              // Only render Collector component for collector role
+              <Collector />
+            ) : roles === 'admin' ? (
+              // Render admin page and other components for admin role
+              <>
+                <Admin userRole={roles} /> 
+                <button
+                  className="button-graph"
+                  onClick={() => setIsGraphVisible(!isGraphVisible)}
+                >
+                  {isGraphVisible ? 'Hide Graph' : 'Show Graph'}
+                </button>
+                {isGraphVisible && <Graphs />}
+                <Map userRoles={roles} />
+              </>
+            ) : (
+              // Standard layout for guests or users
+              <>
+                <button
+                  className="button-graph"
+                  onClick={() => setIsGraphVisible(!isGraphVisible)}
+                >
+                  {isGraphVisible ? 'Hide Graph' : 'Show Graph'}
+                </button>
+                {isGraphVisible && <Graphs />}
+                <Map userRoles={roles} />
+              </>
+            )}
+          </>
+        )}
       </div>
-
-      {formType ? (
-        <Login 
-          formType={formType} 
-          onLoginSuccess={handleLoginSuccess} 
-          onBackToDashboard={() => setFormType(null)} 
-          setFormType={setFormType} 
-        />
-      ) : (
-        <>
-          {isAdminVisible ? (
-            <Admin userRole={roles} /> 
-          ) : (
-            <>
-              <button
-                className="button-graph"
-                onClick={() => setIsGraphVisible(!isGraphVisible)}
-              >
-                {isGraphVisible ? 'Hide Graph' : 'Show Graph'}
-              </button>
-              {isGraphVisible && <Graphs />}
-              <Map userRoles={roles} />
-            </>
-          )}
-        </>
-      )}
-    </div>
-  );
+    );
+    
 };
 
 export default App;

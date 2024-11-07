@@ -12,8 +12,8 @@ ALTER TABLE users
 ADD COLUMN password VARCHAR(255) NOT NULL;
 
 UPDATE users
-SET roles = 'admin'
-WHERE id = 8;
+SET roles = 'collector'
+WHERE id = 9;
 
 select * from users
 
