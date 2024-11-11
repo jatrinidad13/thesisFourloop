@@ -76,7 +76,7 @@ app.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user.id, username: user.username, roles: user.roles },
+      { userId: user.id, username: user.username, roles: user.roles, truckNum: user.truck_num },
       process.env.SECRET_KEY,
       { expiresIn: "1h" }
     );
@@ -98,6 +98,7 @@ function verifyToken(req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     req.user = decoded;
+    console.log(token); // Debugging log
     next();
   } catch (error) {
     console.error("Token verification failed: ", error.message);

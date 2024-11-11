@@ -11,6 +11,8 @@ const App = () => {
   const [formType, setFormType] = useState(null);
   const [username, setUsername] = useState(null);
   const [roles, setUserRoles] = useState(null);
+  const [geoJsonData, setGeoJsonData] = useState(null);
+  const [truckNum, setTruckNum] = useState(null);
   const [isGraphVisible, setIsGraphVisible] = useState(false);
   const [isAdminVisible, setIsAdminVisible] = useState(false);
 
@@ -29,16 +31,34 @@ const App = () => {
       fetchUserRoles();
     }
   }, [username]);
+  useEffect(() => {
+    const fetchGeoJson = async () => {
+      try {
+        const response = await fetch('/shapefiles/sampleroutes.json');
+        if (response.ok) {
+          const data = await response.json();
+          setGeoJsonData(data);
+        } else {
+          console.error('Failed to fetch GeoJSON data.');
+        }
+      } catch (error) {
+        console.error('Error fetching GeoJSON data:', error);
+      }
+    };
 
-  const handleLoginSuccess = (username, roles) => {
+    fetchGeoJson();
+  }, []);
+  const handleLoginSuccess = (username, roles, truckNum) => {
     setUsername(username);
     setUserRoles(roles);
+    setTruckNum(truckNum);
     setFormType(null);
   };
 
   const handleLogout = () => {
     setUsername(null);
     setUserRoles(null);
+    setTruckNum(null);
     setIsAdminVisible(false);
   };
 
@@ -78,8 +98,8 @@ const App = () => {
         />
       ) : (
         <>
-          {roles === 'collector' ? (
-            <Collector />
+           {roles === 'collector' ? (
+            <Collector truckNum={truckNum} geoJsonData={geoJsonData} />
           ) : isAdminVisible ? (
             <Admin userRole={roles} />
           ) : (

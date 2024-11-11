@@ -1,6 +1,6 @@
 /* Map container styling */
 .leaflet-container {
-    height: 70vh;
+    height: 80vh;
     width: 100%;
     border-radius: 8px;
   }

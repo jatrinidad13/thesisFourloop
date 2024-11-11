@@ -75,3 +75,27 @@ CREATE TABLE markers (
 );
 
 drop TABLE pins;
+
+create extension postgis;
+
+SELECT postgis_full_version();
+
+select * from spatialTable;
+
+ALTER TABLE users
+ADD COLUMN truck_num INTEGER;
+
+UPDATE users
+SET truck_num = '132'
+WHERE id = 9;
+
+SELECT 
+    s.*, 
+    u.id, 
+    u.username, 
+    u.truck_num
+FROM 
+    spatialTable s
+JOIN 
+    users u ON s.truck_id = u.truck_num;
+

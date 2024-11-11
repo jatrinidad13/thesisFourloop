@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import "leaflet/dist/leaflet.css";
@@ -23,8 +23,11 @@ const Admin = ({ userRole }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [message, setMessage] = useState('');
   const [isPlacingMarker, setIsPlacingMarker] = useState(false);
+  const [geoJsonData, setGeoJsonData] = useState(null);
 
-  // Fetch pins from the database
+  const mapRef = useRef(null);
+
+  // Fetch pins and GeoJSON data
   useEffect(() => {
     const fetchPins = async () => {
       try {
@@ -39,10 +42,46 @@ const Admin = ({ userRole }) => {
         console.error('Error fetching pins:', error);
       }
     };
+
+    const fetchGeoJson = async () => {
+      try {
+        const response = await fetch('/shapefiles/sampleroutes.json');
+        if (response.ok) {
+          const data = await response.json();
+          setGeoJsonData(data);
+        } else {
+          console.error('Failed to fetch GeoJSON data.');
+        }
+      } catch (error) {
+        console.error('Error fetching GeoJSON data:', error);
+      }
+    };
+
     fetchPins();
+    fetchGeoJson();
   }, []);
 
-  // Add a new pin
+  useEffect(() => {
+    if (geoJsonData && mapRef.current) {
+      const map = mapRef.current;
+
+      // Add GeoJSON layer to the map
+      const geoJsonLayer = L.geoJSON(geoJsonData, {
+        onEachFeature: (feature, layer) => {
+          if (feature.properties && feature.properties.name) {
+            layer.bindPopup(`Route Name: ${feature.properties.name}`);
+          } else {
+            layer.bindPopup('Sample Route');
+          }
+        },
+      }).addTo(map);
+
+      // Fit map bounds to GeoJSON data
+      map.fitBounds(geoJsonLayer.getBounds());
+    }
+  }, [geoJsonData]);
+
+  // Handle adding a new pin
   const handleAddMessage = async () => {
     if (!currentLocation || !message) {
       alert('Please pin a location and enter a message.');
@@ -62,7 +101,7 @@ const Admin = ({ userRole }) => {
 
       if (response.ok) {
         const savedPin = await response.json();
-        setPins((prevPins) => [...prevPins, savedPin]); // Use functional update
+        setPins((prevPins) => [...prevPins, savedPin]);
         setCurrentLocation(null);
         setMessage('');
         setIsPlacingMarker(false);
@@ -76,16 +115,14 @@ const Admin = ({ userRole }) => {
     }
   };
 
-  // Delete a pin
+  // Handle deleting a pin
   const deletePin = async (id_markers) => {
-    console.log("Deleting pin with ID:", id_markers); // Debugging log
     try {
       const response = await fetch(`http://localhost:5000/api/markers/${id_markers}`, {
         method: 'DELETE',
       });
       if (response.ok) {
-        console.log("Pin deleted:", id_markers); // Debugging log
-        setPins((prevPins) => prevPins.filter(pin => pin.id_markers !== id_markers)); // Use id_markers
+        setPins((prevPins) => prevPins.filter(pin => pin.id_markers !== id_markers));
         alert('Pin deleted successfully!');
       } else {
         throw new Error('Failed to delete pin.');
@@ -96,7 +133,7 @@ const Admin = ({ userRole }) => {
     }
   };
 
-  // Component for handling map clicks
+  // Handle map clicks
   const LocationMarker = () => {
     useMapEvents({
       click(e) {
@@ -108,42 +145,41 @@ const Admin = ({ userRole }) => {
     return null;
   };
 
-  //start of admin function
   return (
     <div className='adminwrapper'>
       <div className='admin-top'>
-      <h2>Admin Panel</h2>
+        <h2>Admin Panel</h2>
 
-      {/* Admin map interaction panel */}
-      {userRole === 'admin' && (
-        <div className="a-button-container">
-          <button
-            className="a-button"
-            onClick={() => setIsPlacingMarker(!isPlacingMarker)}
-          >
-            {isPlacingMarker ? 'Stop Placing Markers' : 'Place Marker'}
-          </button>
-          {currentLocation && isPlacingMarker && (
-            <>
-              <input
-                type="text"
-                id='desc-marker'
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Enter a message for the pin"
-                style={{ margin: '10px', padding: '10px' }}
-              />
-              <button className="save-button" onClick={handleAddMessage}>
-                Save Pin
-              </button>
-            </>
-          )}
-        </div>
-      )}
+        {/* Admin map interaction panel */}
+        {userRole === 'admin' && (
+          <div className="a-button-container">
+            <button
+              className="a-button"
+              onClick={() => setIsPlacingMarker(!isPlacingMarker)}
+            >
+              {isPlacingMarker ? 'Stop Placing Markers' : 'Place Marker'}
+            </button>
+            {currentLocation && isPlacingMarker && (
+              <>
+                <input
+                  type="text"
+                  id='desc-marker'
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Enter a message for the pin"
+                  style={{ margin: '10px', padding: '10px' }}
+                />
+                <button className="save-button" onClick={handleAddMessage}>
+                  Save Pin
+                </button>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Map display */}
-      <MapContainer center={[14.6349, 121.0941]} zoom={12} className="map">
+      <MapContainer center={[14.6349, 121.0941]} zoom={12} className="map" ref={mapRef}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -151,7 +187,6 @@ const Admin = ({ userRole }) => {
         {pins.map((pin) => {
           const lat = Number(pin.lat);
           const lng = Number(pin.lng);
-
           if (isNaN(lat) || isNaN(lng)) return null;
 
           return (
@@ -189,4 +224,4 @@ const Admin = ({ userRole }) => {
   );
 };
 
-export default Admin
+export default Admin;
