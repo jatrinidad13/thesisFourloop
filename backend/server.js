@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 // Allow CORS from frontend
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://fourloop.netlify.app/'],
+  origin: ['http://localhost:5173', 'https://fourloop.netlify.app'],
   credentials: true
 }));
 app.use(express.json()); // Parse JSON request bodies
