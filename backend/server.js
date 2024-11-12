@@ -18,11 +18,10 @@ app.use(cors({
 app.use(express.json()); // Parse JSON request bodies
 
 const pool = new pg.Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASS,
-  port: process.env.DB_PORT,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false  // Required for connecting securely in hosted environments like Render
+  }
 });
 
 // Test database connection
