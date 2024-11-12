@@ -11,7 +11,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Allow CORS from frontend
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://your-frontend-domain.com'],
+  credentials: true
+}));
 app.use(express.json()); // Parse JSON request bodies
 
 const pool = new pg.Pool({

@@ -40,7 +40,7 @@ const Collector = ({ truckNum, geoJsonData }) => {
   useEffect(() => {
     const fetchPins = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/markers');
+        const response = await fetch('https://thesisfourloop.onrender.com/api/markers');
         if (response.ok) {
           const data = await response.json();
           setPins(data);

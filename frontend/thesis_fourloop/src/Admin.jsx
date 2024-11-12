@@ -31,7 +31,7 @@ const Admin = ({ userRole }) => {
   useEffect(() => {
     const fetchPins = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/markers');
+        const response = await fetch(':https://thesisfourloop.onrender.com/api/markers');
         if (response.ok) {
           const data = await response.json();
           setPins(data);
@@ -91,7 +91,7 @@ const Admin = ({ userRole }) => {
     const newPin = { lat: currentLocation.lat, lng: currentLocation.lng, message };
 
     try {
-      const response = await fetch('http://localhost:5000/api/markers', {
+      const response = await fetch('https://thesisfourloop.onrender.com/api/markers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const Admin = ({ userRole }) => {
   // Handle deleting a pin
   const deletePin = async (id_markers) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/markers/${id_markers}`, {
+      const response = await fetch(`https://thesisfourloop.onrender.com/api/markers/${id_markers}`, {
         method: 'DELETE',
       });
       if (response.ok) {

@@ -58,7 +58,7 @@ const Graphs = () => {
 
   // Fetch data from the PostgreSQL API
   useEffect(() => {
-    fetch("http://localhost:5000/api/waste_data")
+    fetch("https://thesisfourloop.onrender.com/api/waste_data")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

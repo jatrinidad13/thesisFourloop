@@ -86,7 +86,7 @@ ALTER TABLE users
 ADD COLUMN truck_num INTEGER;
 
 UPDATE users
-SET truck_num = '132'
+SET truck_num = 132
 WHERE id = 9;
 
 SELECT 
