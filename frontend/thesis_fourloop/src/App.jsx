@@ -16,14 +16,22 @@ const App = () => {
   const [isGraphVisible, setIsGraphVisible] = useState(false);
   const [isAdminVisible, setIsAdminVisible] = useState(false);
 
+  // Fetch user roles after login
   useEffect(() => {
     if (username) {
       const fetchUserRoles = async () => {
         try {
-          const response = await fetch('https://thesisfourloop.onrender.com/userinfo');
-          const data = await response.json();
-          setUserRoles(data.roles);
-          console.log('User Role:', data.roles);
+          const response = await fetch('https://thesisfourloop.onrender.com/userinfo', {
+            method: 'GET',
+            credentials: 'include',  // Include cookies for token
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Received User Info:', data);  // Log user info response
+            setUserRoles(data.roles);  // Set the roles state
+          } else {
+            console.error('Failed to fetch user role:', response.status);
+          }
         } catch (error) {
           console.error('Failed to fetch user role:', error);
         }
@@ -31,6 +39,8 @@ const App = () => {
       fetchUserRoles();
     }
   }, [username]);
+
+  // Fetch GeoJSON data for the map
   useEffect(() => {
     const fetchGeoJson = async () => {
       try {
@@ -48,13 +58,17 @@ const App = () => {
 
     fetchGeoJson();
   }, []);
-  const handleLoginSuccess = (username, roles, truckNum) => {
+
+  // Handle login success
+  const handleLoginSuccess = (username, roles, truckNum, token) => {
+    console.log('Received Token:', token);  // Log token to console for debugging
     setUsername(username);
-    setUserRoles(roles);
+    setUserRoles(roles);  // Set user roles after login
     setTruckNum(truckNum);
-    setFormType(null);
+    setFormType(null);  // Close login form
   };
 
+  // Handle logout
   const handleLogout = () => {
     setUsername(null);
     setUserRoles(null);
@@ -62,6 +76,7 @@ const App = () => {
     setIsAdminVisible(false);
   };
 
+  // Handle Admin navigation toggle
   const handleNavigateToAdmin = () => {
     setIsAdminVisible((prev) => !prev);
     if (isAdminVisible) {

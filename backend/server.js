@@ -62,8 +62,8 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Login
-app.post("/login", async (req, res) => {
+  
+  app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
 
@@ -72,6 +72,7 @@ app.post("/login", async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Not a Registered User" });
     }
+
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(400).json({ message: "Invalid Password" });
@@ -82,16 +83,25 @@ app.post("/login", async (req, res) => {
       process.env.SECRET_KEY,
       { expiresIn: "1h" }
     );
-    res.json({ token });
+
+    console.log('Generated JWT Token:', token); // Log token to console for debugging
+
+    // Set token as HttpOnly cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',  // Ensure it's secure in production
+      maxAge: 3600 * 1000,  // 1 hour expiration
+    });
+
+    res.json({ message: "Login successful" });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
   }
 });
 
-// Middleware function for token verification
 function verifyToken(req, res, next) {
-  const token = req.headers.authorization && req.headers.authorization.split(" ")[1];
+  const token = req.cookies.token;  // Read token from cookies
 
   if (!token) {
     return res.status(401).json({ message: "Missing token" });
@@ -100,13 +110,16 @@ function verifyToken(req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     req.user = decoded;
-    console.log(token); // Debugging log
+
+    console.log('Verified JWT Token:', token);  // Log token to console for debugging
+
     next();
   } catch (error) {
     console.error("Token verification failed: ", error.message);
     res.status(401).json({ message: "Invalid token" });
   }
 }
+
 
 // Protected route for user information
 app.get("/userinfo", verifyToken, (req, res) => {
