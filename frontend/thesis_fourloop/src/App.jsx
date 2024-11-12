@@ -20,7 +20,7 @@ const App = () => {
     if (username) {
       const fetchUserRoles = async () => {
         try {
-          const response = await fetch('/userinfo');
+          const response = await fetch('https://thesisfourloop.onrender.com/userinfo');
           const data = await response.json();
           setUserRoles(data.roles);
           console.log('User Role:', data.roles);
