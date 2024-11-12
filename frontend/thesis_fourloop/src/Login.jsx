@@ -34,6 +34,7 @@ export function Login({ formType, onLoginSuccess, onBackToDashboard, setFormType
 
       if (formType === 'login') {
         alert('Login successful!');
+        console.log (response);
         const decoded = jwtDecode(response.data.token); // Decode the token
         console.log({ decoded });
         onLoginSuccess(decoded.username, decoded.roles); // Use the username from the decoded token

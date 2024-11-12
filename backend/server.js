@@ -93,7 +93,7 @@ app.post("/register", async (req, res) => {
       maxAge: 3600 * 1000,  // 1 hour expiration
     });
 
-    res.json({ message: "Login successful" });
+    res.json({ message: "Login successful", token: token});
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");

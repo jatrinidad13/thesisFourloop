@@ -27,7 +27,7 @@ const App = () => {
           });
           if (response.ok) {
             const data = await response.json();
-            console.log('Received User Info:', data);  // Log user info response
+            console.log('Received User Info:', data.user);  // Log user info response
             setUserRoles(data.roles);  // Set the roles state
           } else {
             console.error('Failed to fetch user role:', response.status);
