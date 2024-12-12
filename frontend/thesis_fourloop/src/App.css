@@ -1,95 +1,250 @@
-/* Main container styling */
+/* Reset and base styles */
 * {
-  box-sizing: border-box; /* Apply to all elements */
-  margin-top: .2rem;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  position: fixed; /* Prevent body from scrolling */
 }
 
 #root {
-  max-width: 1280px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main container styling */
+.App {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sidebar styling */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -400px; /* Start hidden */
+  width: 400px;
   height: 100vh;
-  margin-left: 10vw;
-  margin-right: 10vw;
+  background: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  transition: left 0.3s ease;
+  z-index: 2000;
+  overflow-y: auto;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+/* Sidebar header */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 20px 20px 60px; /* Increased left padding to accommodate close button */
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+}
+
+.sidebar-header h1 {
+  font-size: 24px;
+  color: #1a73e8;
+  flex: 1;
+  text-align: center;
+}
+
+/* Sidebar content */
+.sidebar-content {
+  padding: 20px;
+}
+
+.sidebar-section {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Hamburger menu button */
+.menu-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 2001;
+  background: white;
+  border: none;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  flex: 1;
+  justify-content: space-between;
   align-items: center;
-  padding: 0; /* Remove padding for more screen space */
 }
 
-/* Header styling */
-.header {
-  font-size: 1.2rem; /* Smaller header font size */
-  padding: 0.5em;
-  width: 100%;
-  display: flex;
-  justify-content: space-between; /* Space out Header content */
-  align-items: center; /* Center items vertically */
-  flex-wrap: wrap; /* Ensure responsiveness on smaller screens */
+/* Hamburger icon bars */
+.menu-button .bar {
+  width: 20px;
+  height: 2px;
+  background-color: #333;
+  transition: all 0.3s ease;
 }
 
-.header .login-register {
+/* Close button styles */
+.close-button {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #333;
   display: flex;
-  align-items: center; /* Aligns login links vertically with the header */
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.close-button:hover {
+  color: #1a73e8;
+  background-color: rgba(26, 115, 232, 0.1);
+  border-radius: 50%;
+}
+
+/* Navigation links */
+.nav-links {
+  list-style: none;
   padding: 0;
-  margin-left: auto;
+}
+
+.nav-links li {
+  padding: 12px 0;
+}
+
+.nav-links a {
+  color: #1a73e8;
+  text-decoration: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-links a:hover {
+  color: #174ea6;
+}
+
+/* Login/Register section */
+.login-register {
+  padding: 20px 0;
 }
 
 .login-register a {
-  color: #007bff; /* Link color */
-  text-decoration: none; /* Remove underline */
-  margin: 0 0.5em; /* Spacing between links */
-  transition: color 0.3s ease; /* Smooth color transition */
+  color: #1a73e8;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: 500;
 }
 
 .login-register a:hover {
-  color: #0056b3; /* Darker color on hover */
-}
-
-.button-graph{
-  position: relative;
-    display: flex;
-    flex-direction: column;
-    left: 0;
-    width: 9%;
-    align-items: center;
-    margin-top: 2%;
+  color: #174ea6;
 }
 
 /* Map container styling */
 .map {
-  flex: 1;
-  width: 90vw;
-  max-height: calc(100vh - 12rem); /* Occupies 90% of the screen */
-  margin-top: 0.5em;
-  border-radius: 8px;
-  overflow: hidden; /* No scrollbars inside the map */
-}
-/* Login/Register link styling */
-.switch-link {
-  cursor: pointer;           /* Show pointer cursor on hover */
-  color: #007bff;           /* Link color */
-  text-decoration: none;     /* Remove underline */
-  margin-top: 1em;          /* Space above the link */
-  display: inline-block;     /* Inline-block for better spacing */
-  transition: color 0.3s ease; /* Smooth color transition */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
 }
 
-/* Hover effect for the links */
-.switch-link:hover {
-  color: #0056b3;           /* Darker color on hover */
+/* Button styling */
+.button-graph {
+  position: fixed;
+  top: 20px;
+  z-index: 2001;
+  padding: 6px 10px; /* Reduced padding */
+  background: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
+  color: #1a73e8;
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Reduced gap */
+  font-size: 12px; /* Smaller font */
+  height: 28px; /* Reduced height */
+  min-width: 70px; /* Reduced minimum width */
+  max-width: 120px;
 }
 
-/* Optional: You can style the paragraph containing the links as well */
-.switch-link-container {
-  text-align: center;       /* Center the text */
-  margin-top: 1em;         /* Space above the container */
+.button-graph::before {
+  content: "📊";
+  font-size: 12px; /* Smaller icon */
 }
+
+.button-graph:hover {
+  background: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* User info section */
+.user-info {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1a73e8;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+/* Media queries */
 @media screen and (max-width: 768px) {
-  .button-graph{
-    position: relative;
-      display: flex;
-      flex-direction: column;
-      left: 0;
-      width: 35%;
+  .sidebar {
+    width: 300px;
+  }
+  
+  .button-graph {
+    top: 20px;
+    right: 20px;
+    padding: 4px 8px;
+    font-size: 11px;
+    height: 24px;
+    min-width: 60px;
   }
 }

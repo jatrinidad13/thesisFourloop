@@ -1,4 +1,4 @@
-body{
+body {
     width: 100vw;
     overflow: hidden;
     display: flex;
@@ -8,65 +8,63 @@ body{
 }
 
 .l-r-wrapper {
-    width: 30vw; /* Use full width */
-    max-width: 420px; /* Limit to max width for form */
-    padding: 20px; /* Add padding */
-    background-color: #f9f9f9; /* Light background for contrast */
-    border: 1px solid #ccc; /* Border for form */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    width: 30vw;
+    max-width: 420px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
 .l-r-wrapper form {
     text-align: center;
-  }
+}
+
 .l-r-wrapper h2 {
-    font-size: clamp(1.5rem, 5vw, 2rem); /* Responsive title size */
-    text-align: center; /* Center the title */
-    margin-bottom: 1em; /* Space below the title */
-    color: #333; /* Darker color for better contrast */
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    text-align: center;
+    margin-bottom: 1em;
+    color: #333;
 }
 
 .input-box {
-    position: relative; /* Relative positioning for styling */
-    width: 100%; /* Full width */
-    height: 50px; /* Set height for input boxes */
-    margin: 15px 0; /* Space between input boxes */
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 15px 0;
     flex-wrap:wrap ;
 }
 
 .input-box input, #password, #username, .input-box input[type=text] {
     width: 100%;
-    height: 100%; /* Full height for input */
-    padding: 10px; /* Padding inside input */
+    height: 100%;
+    padding: 10px;
     border-radius: 20px;
-    font-size: 1rem; /* Consistent font size */
-    outline: none; /* Remove outline */
-    transition: border-color 0.3s; /* Transition for border color */
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
 }
 
-/* Change border color on focus */
 .input-box input:focus {
-    border-color: #007bff; /* Change border color on focus */
+    border-color: #007bff;
 }
 
 button {
-    width: 100%; /* Full width for button */
-    padding: 10px; /* Padding inside button */
-    color: white; /* Button text color */
-    border: none; /* Remove border */
-    border-radius: 40px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    font-size: 1rem; /* Consistent font size */
-    transition: background-color 0.3s; /* Smooth background color change */
+    width: 100%;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
 
-
-
-/* Media query for mobile responsiveness */
 @media screen and (max-width: 769px) {
     body {
         width: 70%;
-        margin: 0 auto; /* Center horizontally */
+        margin: 0 auto;
         height: 98vh;
         display: flex;
         flex-direction: row;
@@ -79,68 +77,61 @@ button {
         display: flex;
         flex-direction: column;
         width: 100%;
-        justify-content: center; /* Center the content inside */
+        justify-content: center;
     }
 
     .input-box {
-        position: relative; /* Relative positioning for styling */
-        width: 100%; /* Full width */
-        height: 30px; /* Set height for input boxes */
-        margin: 15px 0; /* Space between input boxes */
+        position: relative;
+        width: 100%;
+        height: 30px;
+        margin: 15px 0;
         flex-wrap:wrap ;
     }
     
     .input-box input, #password, #username, .input-box input[type=text] {
         width: 100%;
-        height: 100%; /* Full height for input */
-        padding: 10px; /* Padding inside input */
+        height: 100%;
+        padding: 10px;
         border-radius: 20px;
-        font-size: 1rem; /* Consistent font size */
-        outline: none; /* Remove outline */
-        transition: border-color 0.3s; /* Transition for border color */
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s;
     }
     
-    /* Change border color on focus */
     .input-box input:focus {
-        border-color: #007bff; /* Change border color on focus */
+        border-color: #007bff;
     }
 
     .switch-link {
-        text-align: center; /* Center the text */
-        color: black; /* Default color for the text */
-        padding: 5px 10px; /* Optional padding for better clickability */
-        margin-top: 10px; /* Add margin to separate from other content */
+        text-align: center;
+        color: black;
+        padding: 5px 10px;
+        margin-top: 10px;
         display: flex;
         flex-direction: row;
     }
 
     .switch-link span:hover {
-        text-decoration: underline; /* Underline the link on hover */
-        color: blue; /* Change color to blue on hover */
+        text-decoration: underline;
+        color: blue;
     }
 }
 
-
-
-/* Styles for the back to dashboard link */
 .back-to-dashboard {
-    margin-top: 1em; /* Spacing above the text */
-    text-align: center; /* Center the text */
-    color: black; /* Default color for the text */
-  }
-  
-  /* Styles for the switch link */
-  .switch-link {
-    text-align: center; /* Center the text */
-    margin-top: 0.5em; /* Space above the link */
-    color: black; /* Default color for the text */
-  }
-  
-  /* Underline effect on hover */
-  .switch-link span:hover {
-    text-decoration: underline; /* Underline the link on hover */
-    color: blue; /* Change color to blue on hover */
-  }
-  
+    margin-top: 1em;
+    text-align: center;
+    color: black;
+}
+
+.switch-link {
+    text-align: center;
+    margin-top: 0.5em;
+    color: black;
+}
+
+.switch-link span:hover {
+    text-decoration: underline;
+    color: blue;
+}
   
   

@@ -15,6 +15,7 @@ const App = () => {
   const [truckNum, setTruckNum] = useState(null);
   const [isGraphVisible, setIsGraphVisible] = useState(false);
   const [isAdminVisible, setIsAdminVisible] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Fetch user roles after login
   useEffect(() => {
@@ -84,26 +85,83 @@ const App = () => {
     }
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const renderSidebarContent = () => {
+    return (
+      <>
+        <div className="sidebar-header">
+          <h1>Waste Management</h1>
+          <button className="close-button" onClick={toggleSidebar}>
+            ×
+          </button>
+        </div>
+        
+        <div className="sidebar-content">
+          {username ? (
+            <>
+              <div className="sidebar-section">
+                <div className="user-info">
+                  <div className="user-avatar">
+                    {username[0].toUpperCase()}
+                  </div>
+                  <div>
+                    <h3>{username}</h3>
+                    <p>Role: {roles}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="sidebar-section">
+                <ul className="nav-links">
+                  {roles === 'admin' && (
+                    <li>
+                      <a href="#" onClick={handleNavigateToAdmin}>
+                        {isAdminVisible ? 'View Map' : 'Admin Panel'}
+                      </a>
+                    </li>
+                  )}
+                  <li>
+                    <a href="#" onClick={handleLogout}>Logout</a>
+                  </li>
+                </ul>
+              </div>
+            </>
+          ) : (
+            <div className="sidebar-section">
+              <div className="login-register">
+                <a href="#" onClick={() => setFormType('login')}>Login</a>
+                <span>|</span>
+                <a href="#" onClick={() => setFormType('register')}>Register</a>
+              </div>
+            </div>
+          )}
+          
+          {/* Add additional sidebar sections as needed */}
+        </div>
+      </>
+    );
+  };
+
   return (
     <div className="App">
-      <div className="header" style={{ display: formType ? 'none' : 'flex' }}>
-        <Header 
-          username={username} 
-          roles={roles} 
-          onLogout={handleLogout} 
-          onNavigateToAdmin={handleNavigateToAdmin} 
-          isAdminVisible={isAdminVisible} 
-        />
-        <div className="login-register">
-          {!username && (
-            <p>
-              <a href="#" onClick={() => setFormType('login')}>Login</a> | 
-              <a href="#" onClick={() => setFormType('register')}>Register</a>
-            </p>
-          )}
-        </div>
+      {/* Hamburger Menu Button - only show when sidebar is closed */}
+      {!isSidebarOpen && (
+        <button className="menu-button" onClick={toggleSidebar}>
+          <span className="bar"></span>
+          <span className="bar"></span>
+          <span className="bar"></span>
+        </button>
+      )}
+
+      {/* Sidebar */}
+      <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+        {renderSidebarContent()}
       </div>
 
+      {/* Main Content */}
       {formType ? (
         <Login 
           formType={formType} 
@@ -113,7 +171,7 @@ const App = () => {
         />
       ) : (
         <>
-           {roles === 'collector' ? (
+          {roles === 'collector' ? (
             <Collector truckNum={truckNum} geoJsonData={geoJsonData} />
           ) : isAdminVisible ? (
             <Admin userRole={roles} />

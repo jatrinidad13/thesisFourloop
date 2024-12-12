@@ -1,14 +1,34 @@
 .leaflet-container {
-    height: 90vh;
-  }
-  .button-container {
-    position: absolute;
-    top: 20px; /* Position the button at 20px from the top */
-    left: 10px;
-    z-index: 1000; /* Ensure it's in front of the map */
-  }
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  z-index: 1; /* Base layer */
+}
 
-  /* General styling for buttons */
+/* Remove any potential horizontal scrolling */
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.button-container {
+  position: absolute;
+  top: 20px; /* Position the button at 20px from the top */
+  left: 10px;
+  z-index: 2001; /* Above sidebar */
+}
+
+/* General styling for buttons */
 button {
   color: white;
   border: none;
@@ -18,7 +38,6 @@ button {
   font-size: 14px;
   transition: background-color 0.3s ease;
 }
-
 
 button:disabled {
   background-color: #ccc;
@@ -74,4 +93,9 @@ input[type="text"] {
 .Graph{
   position: absolute;
   size: 30px
+}
+
+/* Update other z-index values */
+.leaflet-control-container {
+  z-index: 2001; /* Ensure map controls are above other elements */
 }
