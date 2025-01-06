@@ -63,37 +63,57 @@ app.post("/register", async (req, res) => {
 });
 
   
-  app.post("/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    // Query user from the users table
     const result = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
     const user = result.rows[0];
+
     if (!user) {
       return res.status(400).json({ message: "Not a Registered User" });
     }
 
+    // Check password
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(400).json({ message: "Invalid Password" });
     }
 
+    // Query routes related to the user's truck_num
+    const routeResult = await pool.query(
+      "SELECT * FROM routes WHERE trucknum = $1",
+      [user.trucknum]
+    );
+
+    // Extract route names into an array
+    const routes = routeResult.rows.map((row) => row.route_name);
+
+    // Generate JWT token with user and route data
     const token = jwt.sign(
-      { userId: user.id, username: user.username, roles: user.roles, truckNum: user.truck_num },
+      { 
+        userId: user.id, 
+        username: user.username, 
+        roles: user.roles, 
+        truckNum: user.truck_num, 
+        routes: routes // Include routes in the token
+      },
       process.env.SECRET_KEY,
       { expiresIn: "1h" }
     );
 
-    console.log('Generated JWT Token:', token); // Log token to console for debugging
+    console.log("Generated JWT Token:", token); // Log token for debugging
 
     // Set token as HttpOnly cookie
-    res.cookie('token', token, {
+    res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',  // Ensure it's secure in production
-      maxAge: 3600 * 1000,  // 1 hour expiration
+      secure: process.env.NODE_ENV === "production", // Ensure secure in production
+      maxAge: 3600 * 1000, // 1-hour expiration
     });
 
-    res.json({ message: "Login successful", token: token});
+    // Respond with success message and token
+    res.json({ message: "Login successful", token: token });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
