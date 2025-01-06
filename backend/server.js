@@ -83,13 +83,12 @@ app.post("/login", async (req, res) => {
 
       // Query routes related to the user's truck_num and convert geometry to GeoJSON
   const routeResult = await pool.query(
-    "SELECT id, route_name, ST_AsGeoJSON(geom) AS geom FROM routes WHERE trucknum = $1",
+    "SELECT id, ST_AsGeoJSON(geom) AS geom FROM routes WHERE trucknum = $1",
     [user.trucknum]
   );
 
   // Extract route names and geometries into an array
   const routes = routeResult.rows.map((row) => ({
-    routeName: row.route_name,
     geometry: JSON.parse(row.geom)  // Parse the GeoJSON string into an object
   }));
 
