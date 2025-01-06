@@ -81,27 +81,30 @@ app.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid Password" });
     }
 
-    // Query routes related to the user's truck_num
-    const routeResult = await pool.query(
-      "SELECT * FROM routes WHERE trucknum = $1",
-      [user.trucknum]
-    );
+      // Query routes related to the user's truck_num and convert geometry to GeoJSON
+  const routeResult = await pool.query(
+    "SELECT id, route_name, ST_AsGeoJSON(geom) AS geom FROM routes WHERE trucknum = $1",
+    [user.trucknum]
+  );
 
-    // Extract route names into an array
-    const routes = routeResult.rows.map((row) => row.route_name);
+  // Extract route names and geometries into an array
+  const routes = routeResult.rows.map((row) => ({
+    routeName: row.route_name,
+    geometry: JSON.parse(row.geom)  // Parse the GeoJSON string into an object
+  }));
 
-    // Generate JWT token with user and route data
-    const token = jwt.sign(
-      { 
-        userId: user.id, 
-        username: user.username, 
-        roles: user.roles, 
-        truckNum: user.trucknum, 
-        routes: routes.geom // Include routes in the token
-      },
-      process.env.SECRET_KEY,
-      { expiresIn: "1h" }
-    );
+  // Generate JWT token with user and route data
+  const token = jwt.sign(
+    { 
+      userId: user.id, 
+      username: user.username, 
+      roles: user.roles, 
+      truckNum: user.trucknum, 
+      routes: routes  // Include routes as an array of objects
+    },
+    process.env.SECRET_KEY,
+    { expiresIn: "1h" }
+  );
 
     console.log("Generated JWT Token:", token); // Log token for debugging
 
