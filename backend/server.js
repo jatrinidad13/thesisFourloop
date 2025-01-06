@@ -97,7 +97,7 @@ app.post("/login", async (req, res) => {
         username: user.username, 
         roles: user.roles, 
         truckNum: user.trucknum, 
-        routes: routes // Include routes in the token
+        routes: routes.geom // Include routes in the token
       },
       process.env.SECRET_KEY,
       { expiresIn: "1h" }
