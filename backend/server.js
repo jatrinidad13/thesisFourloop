@@ -197,28 +197,38 @@ app.delete('/api/markers/:id_markers', async (req, res) => {
   }
 });
 
-// API endpoint to get routes by trucknum
-app.get('/api/routes/:trucknum', async (req, res) => {
-  const { trucknum } = req.params;
-
+app.get('/api/routes/:truckNum', async (req, res) => {
+  const truckNum = req.params.truckNum;
   try {
-    // Fetch routes where trucknum matches
     const result = await pool.query(
-      'SELECT * FROM routes WHERE trucknum = $1',
-      [trucknum]
+      'SELECT id, trucknum, start_mrf, dest_point, ST_AsGeoJSON(geom) AS geom FROM spatialTable WHERE trucknum = $1',
+      [truckNum]
     );
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'No routes found for the provided truck number.' });
-    }
+    if (result.rows.length > 0) {
+      const geoJson = {
+        type: 'FeatureCollection',
+        features: result.rows.map((row) => ({
+          type: 'Feature',
+          geometry: JSON.parse(row.geom),
+          properties: {
+            id: row.id,
+            trucknum: row.trucknum,
+            start_mrf: row.start_mrf,
+            dest_point: row.dest_point,
+          },
+        })),
+      };
 
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching routes:', err.stack);
-    res.status(500).json({ message: 'Server error' });
+      res.json(geoJson);
+    } else {
+      res.status(404).json({ message: 'No routes found for this truck number.' });
+    }
+  } catch (error) {
+    console.error('Error fetching routes:', error);
+    res.status(500).json({ message: 'Server error.' });
   }
 });
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

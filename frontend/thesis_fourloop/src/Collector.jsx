@@ -7,7 +7,6 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import "./map.css";
 
-// Custom Leaflet icon
 const customIcon = new L.Icon({
   iconUrl: markerIcon,
   iconRetinaUrl: markerIcon2x,
@@ -18,46 +17,33 @@ const customIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-const Collector = ({ token }) => {
+const Collector = ({ truckNum }) => {
   const [pins, setPins] = useState([]);
-  const [geoJsonData, setGeoJsonData] = useState(null); // Holds the fetched route data
+  const [routeData, setRouteData] = useState(null);
   const mapRef = useRef(null);
 
-  // Decode the token to extract truckNum
-  const decodeToken = (token) => {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
-      return payload.truckNum;
-    } catch (error) {
-      console.error("Error decoding token:", error);
-      return null;
-    }
-  };
-
-  const truckNum = decodeToken(token);
-
-  // Fetch route data from the backend for the user's truckNum
+  // Fetch route data from the database based on truckNum
   useEffect(() => {
-    const fetchRoute = async () => {
-      if (!truckNum) return;
-
+    const fetchRoutes = async () => {
       try {
         const response = await fetch(`https://thesisfourloop.onrender.com/api/routes/${truckNum}`);
         if (response.ok) {
           const data = await response.json();
-          setGeoJsonData(data); // Assume the backend returns GeoJSON
+          setRouteData(data); // GeoJSON format from backend
         } else {
-          console.error("Failed to fetch route data.");
+          console.error('Failed to fetch routes.');
         }
       } catch (error) {
-        console.error("Error fetching route data:", error);
+        console.error('Error fetching routes:', error);
       }
     };
 
-    fetchRoute();
+    if (truckNum) {
+      fetchRoutes();
+    }
   }, [truckNum]);
 
-  // Fetch pins from the database on component mount
+  // Fetch pins
   useEffect(() => {
     const fetchPins = async () => {
       try {
@@ -76,20 +62,25 @@ const Collector = ({ token }) => {
     fetchPins();
   }, []);
 
-  // Fit map bounds to GeoJSON data
+  // Fit map bounds to route data
   useEffect(() => {
-    if (geoJsonData && mapRef.current) {
+    if (routeData && mapRef.current) {
       const map = mapRef.current;
-      const geoJsonLayer = L.geoJSON(geoJsonData);
+      const geoJsonLayer = L.geoJSON(routeData);
       map.fitBounds(geoJsonLayer.getBounds());
     }
-  }, [geoJsonData]);
+  }, [routeData]);
 
   const onEachFeature = (feature, layer) => {
-    if (feature.properties && feature.properties.name) {
-      layer.bindPopup(`Route Name: ${feature.properties.name}`);
-    } else {
-      layer.bindPopup('Route Information Unavailable');
+    if (feature.properties) {
+      layer.bindPopup(`
+        <div>
+          <strong>Route Information:</strong><br />
+          Truck Number: ${feature.properties.trucknum} <br />
+          Start: ${feature.properties.start_mrf} <br />
+          Destination: ${feature.properties.dest_point}
+        </div>
+      `);
     }
   };
 
@@ -125,9 +116,9 @@ const Collector = ({ token }) => {
         );
       })}
 
-      {geoJsonData && (
+      {routeData && (
         <GeoJSON
-          data={geoJsonData}
+          data={routeData}
           style={{ color: 'blue', weight: 2 }}
           onEachFeature={onEachFeature}
         />
