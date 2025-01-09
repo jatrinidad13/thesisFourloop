@@ -22,10 +22,13 @@ const App = () => {
     if (username) {
       const fetchUserRoles = async () => {
         try {
+          console.log({truckNum});
+          return;
           const response = await fetch('https://thesisfourloop.onrender.com/userinfo', {
             method: 'GET',
             credentials: 'include',  // Include cookies for token
           });
+          console.log({response});
           if (response.ok) {
             const data = await response.json();
             console.log('Received User Info:', data.user);  // Log user info response

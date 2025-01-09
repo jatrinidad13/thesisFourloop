@@ -24,6 +24,7 @@ const Collector = ({ truckNum }) => {
 
   // Fetch route data from the database based on truckNum
   useEffect(() => {
+    console.log({truckNum});
     const fetchRoutes = async () => {
       try {
         const response = await fetch(`https://thesisfourloop.onrender.com/api/routes/${truckNum}`);

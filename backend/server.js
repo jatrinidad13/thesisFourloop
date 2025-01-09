@@ -145,6 +145,7 @@ function verifyToken(req, res, next) {
 // Protected route for user information
 app.get("/userinfo", verifyToken, (req, res) => {
   res.json({ user: req.user });
+  cons
 });
 
 // Endpoint to get waste data
@@ -201,7 +202,7 @@ app.get('/api/routes/:truckNum', async (req, res) => {
   const truckNum = req.params.truckNum;
   try {
     const result = await pool.query(
-      'SELECT id, trucknum, start_mrf, dest_point, ST_AsGeoJSON(geom) AS geom FROM spatialTable WHERE trucknum = $1',
+      'SELECT id, trucknum, start_mrf, dest_point, ST_AsGeoJSON(geom) AS geom FROM routes WHERE trucknum = $1',
       [truckNum]
     );
 

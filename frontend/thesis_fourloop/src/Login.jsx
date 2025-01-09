@@ -37,7 +37,7 @@ export function Login({ formType, onLoginSuccess, onBackToDashboard, setFormType
         console.log (response);
         const decoded = jwtDecode(response.data.token); // Decode the token
         console.log({ decoded });
-        onLoginSuccess(decoded.username, decoded.roles); // Use the username from the decoded token
+        onLoginSuccess(decoded.username, decoded.roles, decoded.truckNum); // Use the username from the decoded token
       } else {
         alert('Registration successful!');
       }
