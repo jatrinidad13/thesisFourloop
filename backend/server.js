@@ -98,8 +98,7 @@ app.post("/login", async (req, res) => {
       userId: user.id, 
       username: user.username, 
       roles: user.roles, 
-      truckNum: user.trucknum, 
-      routes: routes  // Include routes as an array of objects
+      truckNum: user.trucknum,
     },
     process.env.SECRET_KEY,
     { expiresIn: "1h" }
@@ -195,6 +194,28 @@ app.delete('/api/markers/:id_markers', async (req, res) => {
   } catch (err) {
     console.error('Error executing query:', err.stack);
     res.status(500).send('Server error');
+  }
+});
+
+// API endpoint to get routes by trucknum
+app.get('/api/routes/:trucknum', async (req, res) => {
+  const { trucknum } = req.params;
+
+  try {
+    // Fetch routes where trucknum matches
+    const result = await pool.query(
+      'SELECT * FROM routes WHERE trucknum = $1',
+      [trucknum]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No routes found for the provided truck number.' });
+    }
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching routes:', err.stack);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

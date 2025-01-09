@@ -18,23 +18,44 @@ const customIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-const Collector = ({ truckNum, geoJsonData }) => {
+const Collector = ({ token }) => {
   const [pins, setPins] = useState([]);
+  const [geoJsonData, setGeoJsonData] = useState(null); // Holds the fetched route data
   const mapRef = useRef(null);
 
-  useEffect(() => {
-    if (geoJsonData && truckNum) {
-      const truckIds = geoJsonData.features.map((feature) => feature.properties.truck_id);
-      console.log('Fetched truck_ids:', truckIds);
-
-      const isTruckMatch = truckIds.includes(truckNum);
-      if (isTruckMatch) {
-        console.log('Match found for user truck number:', truckNum);
-      } else {
-        console.log('No match found for user truck number.');
-      }
+  // Decode the token to extract truckNum
+  const decodeToken = (token) => {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+      return payload.truckNum;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      return null;
     }
-  }, [truckNum, geoJsonData]);
+  };
+
+  const truckNum = decodeToken(token);
+
+  // Fetch route data from the backend for the user's truckNum
+  useEffect(() => {
+    const fetchRoute = async () => {
+      if (!truckNum) return;
+
+      try {
+        const response = await fetch(`https://thesisfourloop.onrender.com/api/routes/${truckNum}`);
+        if (response.ok) {
+          const data = await response.json();
+          setGeoJsonData(data); // Assume the backend returns GeoJSON
+        } else {
+          console.error("Failed to fetch route data.");
+        }
+      } catch (error) {
+        console.error("Error fetching route data:", error);
+      }
+    };
+
+    fetchRoute();
+  }, [truckNum]);
 
   // Fetch pins from the database on component mount
   useEffect(() => {
@@ -68,7 +89,7 @@ const Collector = ({ truckNum, geoJsonData }) => {
     if (feature.properties && feature.properties.name) {
       layer.bindPopup(`Route Name: ${feature.properties.name}`);
     } else {
-      layer.bindPopup('Sample Route');
+      layer.bindPopup('Route Information Unavailable');
     }
   };
 
